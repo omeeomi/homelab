@@ -17,10 +17,6 @@ log_in () {
    vault login $ROOT_TOKEN
 }
 
-create_token () {
-   vault token create -id $MY_VAULT_TOKEN
-}
-
 if [ -s /vault/file/keys ]; then
    unseal
 else
