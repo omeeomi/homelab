@@ -1,9 +1,8 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
-# SOURCE- https://github.com/hashicorp/vault-guides/blob/master/operations/provision-vault/dev/vagrant-local/Vagrantfile
 
 # Networking
-private_ip = ENV['PRIVATE_IP'] || "192.168.50.152"
+private_ip = ENV['PRIVATE_IP'] || "192.168.56.155"
 
 # Base box selection
 base_box = ENV['BASE_BOX'] || "bento/ubuntu-16.04"
@@ -20,7 +19,7 @@ consul_home = "/srv/consul"
 
 # Vault variables
 vault_host_port = ENV['VAULT_HOST_PORT'] || 8200
-vault_version = ENV['VAULT_VERSION'] || "1.2.3"
+vault_version = ENV['VAULT_VERSION'] || "1.9.3"
 vault_ent_url = ENV['VAULT_ENT_URL']
 vault_group = "vault"
 vault_user = "vault"
@@ -80,7 +79,7 @@ Vagrant.configure("2") do |config|
     }
 
   # Install Vault
-  config.vm.provision "shell", inline: "curl https://raw.githubusercontent.com/hashicorp/guides-configuration/master/vault/scripts/install-vault.sh | bash",
+  config.vm.provision "shell", path: "install-vault.sh",
     env: {
       "VERSION" => vault_version,
       "URL" => vault_ent_url,
@@ -88,7 +87,7 @@ Vagrant.configure("2") do |config|
       "GROUP" => vault_group,
     }
 
-  config.vm.provision "shell", inline: "curl https://raw.githubusercontent.com/hashicorp/guides-configuration/master/vault/scripts/install-vault-systemd.sh | bash"
+  config.vm.provision "shell", path: "install-vault-systemd.sh"
 
   # Increase memory for Parallels Desktop
   config.vm.provider "parallels" do |p, o|
